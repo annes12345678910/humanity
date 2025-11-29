@@ -109,8 +109,10 @@ while not rl.window_should_close():
                 dumpandprint(f"Picked: {cols}")
         picked = []
         for i in droppeditems[:]:  # iterate over a copy
-            if isinstance(i, props._empty) and rl.get_ray_collision_box(mouseray, i.box).hit and i.pickable:
-                if set67(i.clas()):
+            if rl.get_ray_collision_box(mouseray, i.box).hit:
+                if isinstance(i, props._empty) and not i.pickable:
+                    continue
+                if set67(i.clas() if isinstance(i, props._empty) else i):
                     picked.append(i)
                     dumpandprint(f"Picked dropped: {i}")  # or cols if properly defined
 
@@ -195,7 +197,8 @@ while not rl.window_should_close():
         if isinstance(i, props._empty):
             i.draw()
         elif isinstance(i, props.Item):
-            rl.draw_billboard(cam, i.texture, i.pos, 2, rl.WHITE)
+            rl.draw_billboard(cam, i.texture, i.pos, 1, rl.WHITE)
+            rl.draw_bounding_box(i.box, rl.RED)
 
     #rl.draw_ray(mouseray, rl.RED)
     rl.end_mode_3d()
@@ -209,12 +212,16 @@ while not rl.window_should_close():
             rl.draw_text(f"Click To Pickup {cols.__class__.__name__.capitalize()}", int(winw / 2) - 50, int(winh / 2) - 30, 20, rl.BLACK)
         elif cols.pickable and slots["left"] and slots["right"]:
             rl.draw_text("Your hands are full", int(winw / 2) - 50, int(winh / 2) - 30, 20, rl.BLACK)
+    
     for i in droppeditems[:]:  # iterate over a copy
-        if isinstance(i, props._empty) and rl.get_ray_collision_box(mouseray, i.box).hit and i.pickable:
+        if rl.get_ray_collision_box(mouseray, i.box).hit:
+            if isinstance(i, props._empty) and i.pickable:
+                continue
             if handsfree():
                 rl.draw_text(f"Click To Pickup {i.__class__.__name__.capitalize()}", int(winw / 2) - 50, int(winh / 2) - 30, 20, rl.BLACK)
             else:
                 rl.draw_text("Your hands are full", int(winw / 2) - 50, int(winh / 2) - 30, 20, rl.BLACK)
+        
     if isinstance(slots["left"], props.Item):
         slots["left"].draw(rl.Vector2(10, winh - 74)) # type: ignore
         rl.draw_text("Left Hand", 10, winh - 94, 20, rl.BLACK)

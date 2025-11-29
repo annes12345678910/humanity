@@ -3,7 +3,7 @@ import ultimateraylib as rl
 import math,util
 
 def init():
-    global treemodel, floormodel, rockmodel, tree_bb, rock_bb, flintmodel, flint_bb,rocktex, itemtex, flinttex, craftsound
+    global treemodel, floormodel, rockmodel, tree_bb, rock_bb, flintmodel, flint_bb,rocktex, itemtex, flinttex, craftsound, knifetex
     treemodel = asset.load_model("assets/tree.glb")
     floormodel = asset.load_model("assets/floor.glb")
     rockmodel = asset.load_model("assets/rock.glb")
@@ -15,6 +15,7 @@ def init():
     flinttex = asset.load_texture("assets/flintitem.png")
     itemtex = asset.load_texture("assets/ITEM.png")
     craftsound = asset.load_sound("assets/craft.mp3")
+    knifetex = asset.load_texture("assets/knife.png")
 
 class Animal:
     def __init__(self, health: int, model, modelanims, pos: rl.Vector3, roty: float) -> None:
@@ -308,6 +309,11 @@ class Item:
         self.pos = pos
         self.hasblock = False
         self.blockform = None
+        self.box = rl.BoundingBox()
+        opo = 0.3
+        self.box.min = rl.vector3_subtract(self.pos, rl.Vector3(opo, opo, opo))
+        self.box.max = rl.vector3_add(self.pos, rl.Vector3(opo, opo, opo))
+
         "should be 32x32 texture"
         
     def draw(self, pos: rl.Vector2):
@@ -333,6 +339,7 @@ class FlintItem(Item):
 class Knife(Item):
     def __init__(self, pos=rl.Vector3()) -> None:
         super().__init__(pos)
+        self.texture = knifetex
 
 def test():
     rl.init_window()
