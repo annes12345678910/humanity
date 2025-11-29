@@ -5,7 +5,7 @@ from util import *
 import ultimateraylib as rl
 import pickle
 
-__version__ = "0.0.1"
+__version__ = "0.0.1dev"
 
 if os.path.exists("debug.log"):
     with open("debug.log", "w") as f:
