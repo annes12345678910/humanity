@@ -3,7 +3,7 @@ import ultimateraylib as rl
 import math,util
 
 def init():
-    global treemodel, floormodel, rockmodel, tree_bb, rock_bb, flintmodel, flint_bb,rocktex, itemtex, flinttex, craftsound, knifetex
+    global treemodel, floormodel, rockmodel, tree_bb, rock_bb, flintmodel, flint_bb,rocktex, itemtex, flinttex, craftsound, knifetex, buildingmodel, building_bb, buildingtex
     treemodel = asset.load_model("assets/tree.glb")
     floormodel = asset.load_model("assets/floor.glb")
     rockmodel = asset.load_model("assets/rock.glb")
@@ -16,6 +16,9 @@ def init():
     itemtex = asset.load_texture("assets/ITEM.png")
     craftsound = asset.load_sound("assets/craft.mp3")
     knifetex = asset.load_texture("assets/knife.png")
+    buildingmodel = asset.load_model("assets/building.glb")
+    building_bb = rl.get_model_bounding_box(buildingmodel)
+    buildingtex = asset.load_texture("assets/building.png")
 
 class Animal:
     def __init__(self, health: int, model, modelanims, pos: rl.Vector3, roty: float) -> None:
@@ -340,6 +343,36 @@ class Knife(Item):
     def __init__(self, pos=rl.Vector3()) -> None:
         super().__init__(pos)
         self.texture = knifetex
+
+class Building:
+    def __init__(self, pos=rl.Vector3()) -> None:
+        self.pos = pos
+        self.box = rl.BoundingBox()
+        self.health = 10
+        self.update_box(building_bb)
+
+    def update_box(self, withh):
+        self.box.min = rl.Vector3(
+            withh.min.x + self.pos.x,
+            withh.min.y + self.pos.y,
+            withh.min.z + self.pos.z
+        )
+        self.box.max = rl.Vector3(
+            withh.max.x + self.pos.x,
+            withh.max.y + self.pos.y,
+            withh.max.z + self.pos.z
+        )
+    
+    def draw(self):
+        rl.draw_model(buildingmodel, self.pos, 1, rl.WHITE)
+        rl.draw_bounding_box(self.box, rl.RED)
+
+class BuildingItem(Item):
+    def __init__(self, pos=rl.Vector3()) -> None:
+        super().__init__(pos)
+        self.blockform = Building
+        self.texture = buildingtex
+    
 
 def test():
     rl.init_window()

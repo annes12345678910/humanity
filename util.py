@@ -13,6 +13,11 @@ slots = {
     "left": None,
     "right": None
 }
+
+buildings = [
+    
+]
+
 def handsfree():
     if not slots["left"] or not slots["right"]:
         return True
@@ -114,12 +119,16 @@ def dicttoregion(dik: dict):
 
 def craft():
     crafted = None
+    rl.play_sound(props.craftsound)
     if handshave(props.RockItem, props.FlintItem):
-        rl.play_sound(props.craftsound)
         clearhands()
         #slots[config.dominanthand] = props.Knife() # type: ignore
         set67(props.Knife())
         crafted = slots[config.dominanthand]
+    elif handshave(props.RockItem, props.Knife):
+        clearhands()
+        #slots[config.dominanthand] = props.Knife() # type: ignore
+        set67(props.BuildingItem())
+        crafted = slots[config.dominanthand]
     
     dumpandprint(f"I crafted {crafted}")
-    

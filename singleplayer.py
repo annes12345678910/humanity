@@ -92,13 +92,15 @@ freemusic = asset.load_music("assets/free.mp3")
 #oooop.add_region(props.Region(rl.Vector3(0,0,0)))
 #oooop.add_region(props.Region(rl.Vector3(32,0,0)))
 
+currentframe = 0
+
 while not rl.window_should_close():
     winw = rl.get_screen_width() if not rl.is_window_fullscreen() else rl.get_monitor_width(rl.get_current_monitor())
     winh = rl.get_screen_height() if not rl.is_window_fullscreen() else rl.get_monitor_height(rl.get_current_monitor())
     rl.update_camera(cam, rl.CAMERA_FIRST_PERSON)
     rl.set_mouse_position(int(winw / 2), int(winh / 2))
     
-    
+    #print(math.sin(currentframe))
     mouseray = rl.get_screen_to_world_ray(rl.get_mouse_position(), cam)
     cols = oooop.get_collision(mouseray)
 
@@ -124,11 +126,11 @@ while not rl.window_should_close():
         craft()
     
     if rl.is_key_pressed(rl.KEY_Q):
-        if isinstance(slots[config.dominanthand], props.Item):
+        if isinstance(slots[config.dominanthand], props.Item) and not isinstance(slots[config.dominanthand], props.BuildingItem):
             erm: props.Item = slots[config.dominanthand] # type: ignore
             droppeditems.append(erm.blockform(model_pos) if erm.blockform else erm.__class__(model_pos))
             slots[config.dominanthand] = None
-        elif isinstance(slots[nondominanthand], props.Item):
+        elif isinstance(slots[nondominanthand], props.Item) and not isinstance(slots[nondominanthand], props.BuildingItem):
             erm: props.Item = slots[nondominanthand] # type: ignore
             if erm.hasblock:
                 droppeditems.append(erm.blockform(model_pos) if erm.blockform else erm.__class__(model_pos))
@@ -168,6 +170,14 @@ while not rl.window_should_close():
         current = 0
     if rl.is_key_pressed(rl.KEY_PERIOD):
         drawemotes = not drawemotes
+    
+    # Place buildings
+    if rl.is_mouse_button_pressed(rl.MOUSE_BUTTON_RIGHT):
+        dada = slots[config.dominanthand]
+        if isinstance(dada, props.BuildingItem):
+            buildings.append(dada.blockform(model_pos))
+            slots[config.dominanthand] = None
+    
     if drawemotes:
         if rl.is_key_pressed(rl.KEY_ONE):
             current = 3
@@ -188,7 +198,7 @@ while not rl.window_should_close():
     model_pos = rl.Vector3(cam.position.x + (0.1 if camyaw < -90 and camyaw > -180 else -0.1), (bb.min.y) if current == 0 else bb.min.y + 0.6, cam.position.z + (0.1 if camyaw < -90 and camyaw > -180 else -0.1))  # push mesh up by bottom Y
 
     oooop.ensure_region(snap_floor(model_pos))
-
+    
     bb.min = rl.Vector3(model_pos.x - 0.3, model_pos.y if current == 0 else model_pos.y - 0.6, model_pos.z - 0.3)
     bb.max = rl.Vector3(model_pos.x + 0.3, (model_pos.y + 1.6) if current == 0 else model_pos.y + 1, model_pos.z + 0.3)
     rl.draw_model_ex(headless, model_pos, rl.Vector3(0,1,0), camyaw + 180, rl.Vector3(1,1,1), rl.WHITE)
@@ -199,6 +209,10 @@ while not rl.window_should_close():
         elif isinstance(i, props.Item):
             rl.draw_billboard(cam, i.texture, i.pos, 1, rl.WHITE)
             rl.draw_bounding_box(i.box, rl.RED)
+    
+    for i in buildings:
+        if isinstance(i, props.Building):
+            i.draw()
 
     #rl.draw_ray(mouseray, rl.RED)
     rl.end_mode_3d()
