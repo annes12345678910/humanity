@@ -101,6 +101,14 @@ class Animal:
         )
         if debug:
             rl.draw_bounding_box(self.box, rl.RED)
+            rl.draw_model_wires_ex(
+            self.model, 
+            self.pos, 
+            rl.Vector3(0, 1, 0), 
+            self.roty + 180, 
+            rl.Vector3(1, 1, 1), 
+            rl.BLACK
+            )
     
     def followmovesheet(self, sheet: list[rl.Vector3], speed=0.1, rotspeed=2, loop=False):
         """Follow a sheet of moves."""
