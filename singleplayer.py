@@ -98,7 +98,9 @@ while not rl.window_should_close():
     winw = rl.get_screen_width() if not rl.is_window_fullscreen() else rl.get_monitor_width(rl.get_current_monitor())
     winh = rl.get_screen_height() if not rl.is_window_fullscreen() else rl.get_monitor_height(rl.get_current_monitor())
     rl.update_camera(cam, rl.CAMERA_FIRST_PERSON)
-    rl.set_mouse_position(int(winw / 2), int(winh / 2))
+    
+    if not rl.is_key_down(rl.KEY_M):
+        rl.set_mouse_position(int(winw / 2), int(winh / 2))
     
     #print(math.sin(currentframe))
     mouseray = rl.get_screen_to_world_ray(rl.get_mouse_position(), cam)

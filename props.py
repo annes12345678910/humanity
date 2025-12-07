@@ -3,31 +3,41 @@ import ultimateraylib as rl
 import math,util
 
 def init():
-    global treemodel, floormodel, rockmodel, tree_bb, rock_bb, flintmodel, flint_bb,rocktex, itemtex, flinttex, craftsound, knifetex, buildingmodel, building_bb, buildingtex
+    global treemodel, floormodel, rockmodel, tree_bb, rock_bb, flintmodel, flint_bb,rocktex, itemtex, flinttex, craftsound, knifetex, buildingmodel, building_bb, buildingtex, smilodonmodel, smilodonanims
     treemodel = asset.load_model("assets/tree.glb")
     floormodel = asset.load_model("assets/floor.glb")
     rockmodel = asset.load_model("assets/rock.glb")
     flintmodel = asset.load_model("assets/flint.glb")
+
     tree_bb = rl.get_model_bounding_box(treemodel)
     rock_bb = rl.get_model_bounding_box(rockmodel)
     flint_bb = rl.get_model_bounding_box(flintmodel)
+
     rocktex = asset.load_texture("assets/rockitem.png")
     flinttex = asset.load_texture("assets/flintitem.png")
     itemtex = asset.load_texture("assets/ITEM.png")
+
     craftsound = asset.load_sound("assets/craft.mp3")
+
     knifetex = asset.load_texture("assets/knife.png")
+
     buildingmodel = asset.load_model("assets/building.glb")
     building_bb = rl.get_model_bounding_box(buildingmodel)
     buildingtex = asset.load_texture("assets/building.png")
 
+    smilodonmodel = asset.load_model("assets/smilodon.glb")
+    smilodonanims = asset.load_model_animations("assets/smilodon.glb")
+
 class Animal:
-    def __init__(self, health: int, model, modelanims, pos: rl.Vector3, roty: float) -> None:
+    def __init__(self, health: int, model: rl.Model, modelanims: list[rl.ModelAnimation] | None, pos: rl.Vector3, roty: float) -> None:
         self.health = health
         self.model = model
         self.modelanims = modelanims
+        self.animframe = 0
+        self.index = 0
+        self.sheetindex = 0
         self.pos = pos
         self.roty = roty  # rotation around Y axis in degrees
-        self.index = 0
         self.box = rl.get_model_bounding_box(self.model)
         self._updateboxpos()
         
@@ -77,11 +87,15 @@ class Animal:
 
 
     def draw(self, debug=False):
+        if self.modelanims:
+            self.animframe = (self.animframe + 1) % self.modelanims[self.index].frameCount
+            rl.update_model_animation(self.model, self.modelanims[self.index], self.animframe)
+
         rl.draw_model_ex(
             self.model, 
             self.pos, 
             rl.Vector3(0, 1, 0), 
-            self.roty, 
+            self.roty + 180, 
             rl.Vector3(1, 1, 1), 
             rl.WHITE
         )
@@ -90,18 +104,19 @@ class Animal:
     
     def followmovesheet(self, sheet: list[rl.Vector3], speed=0.1, rotspeed=2, loop=False):
         """Follow a sheet of moves."""
+        
         if not sheet:
             return
 
-        target = sheet[self.index]
+        target = sheet[self.sheetindex]
 
         # Move toward target, returns True if reached
         if self.moveto(target, speed, rotspeed):
             # Increment index
-            if self.index < len(sheet) - 1:
-                self.index += 1
+            if self.sheetindex < len(sheet) - 1:
+                self.sheetindex += 1
             elif loop:
-                self.index = 0
+                self.sheetindex = 0
             # If not looping and at last target, stay there
     
     def checkcollision(self, other):
