@@ -217,6 +217,12 @@ while not rl.window_should_close():
             i.draw()
 
     #rl.draw_ray(mouseray, rl.RED)
+    if daynightf <= 18000:
+        rl.draw_billboard(cam, props.suntex, rl.Vector3(model_pos.x + 50, model_pos.y, model_pos.z), 5, rl.WHITE)
+    
+    elif daynightf >= 18000:
+        rl.draw_billboard(cam, props.suntex, rl.Vector3(model_pos.x - 50, model_pos.y, model_pos.z), 5, rl.WHITE)
+
     rl.end_mode_3d()
     rl.draw_text(str(daynightf), 0, 0, 20, rl.BLACK)
     if drawemotes:
@@ -245,6 +251,7 @@ while not rl.window_should_close():
     if isinstance(slots["right"], props.Item):
         slots["right"].draw(rl.Vector2(winw - 74, winh - 74)) # type: ignore
         rl.draw_text("Right Hand", winw - 124, winh - 94, 20, rl.BLACK)
+    drawcopyright(winh)
     rl.end_drawing()
 
     tosave = {

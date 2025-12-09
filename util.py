@@ -132,3 +132,6 @@ def craft():
         crafted = slots[config.dominanthand]
     
     dumpandprint(f"I crafted {crafted}")
+
+def drawcopyright(winh):
+    rl.draw_text("© Annes Widow - 2025", 10, winh - 20, 10, rl.LIGHTGRAY)
