@@ -18,6 +18,7 @@ dumplog(f"Raylib binding version: {rl.__version__}")
 dumplog(f"Game Version: {__version__}\n")
 
 dumplog("Camera Made")
+
 cam = rl.make_camera(
     rl.Vector3(10,1.5,10),
     rl.Vector3(0,0,0),
@@ -39,9 +40,10 @@ dumplog(f"Set fps to {config.fps}")
 
 props.init()
 # Load model + animations
+
 headless = asset.load_model("assets/headless.glb")
 headlessanim = asset.load_model_animations("assets/headless.glb")
-#floor = rl.load_model("assets/floor.glb")
+
 ok = rl.is_model_animation_valid(headless, headlessanim[0])
 print("VALID?", ok)
 
@@ -215,7 +217,11 @@ while not rl.window_should_close():
     for i in buildings:
         if isinstance(i, props.Building):
             i.draw()
-
+    
+    for i in animals:
+        if isinstance(i, props.Animal):
+            i.draw(True)
+    
     #rl.draw_ray(mouseray, rl.RED)
     if daynightf <= 18000:
         rl.draw_billboard(cam, props.suntex, rl.Vector3(model_pos.x + 50, model_pos.y, model_pos.z), 5, rl.WHITE)

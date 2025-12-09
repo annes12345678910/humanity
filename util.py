@@ -14,9 +14,9 @@ slots = {
     "right": None
 }
 
-buildings = [
-    
-]
+buildings = []
+
+animals = []
 
 def handsfree():
     if not slots["left"] or not slots["right"]:

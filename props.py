@@ -32,6 +32,7 @@ def init():
     moontex = asset.load_texture("assets/moon.png")
 
 class Animal:
+    'Generic Animal'
     def __init__(self, health: int, model: rl.Model, modelanims: list[rl.ModelAnimation] | None, pos: rl.Vector3, roty: float) -> None:
         self.health = health
         self.model = model
@@ -133,7 +134,10 @@ class Animal:
     def checkcollision(self, other):
         return rl.check_collision_boxes(self.box, other.box)
 
-
+class Smilodon(Animal):
+    'Saber Tooth Tiger'
+    def __init__(self, pos: rl.Vector3, roty: float) -> None:
+        super().__init__(200, smilodonmodel, smilodonanims, pos, roty)
 
 class _empty:
     def __init__(self, pos=rl.Vector3(0,0,0)) -> None:
@@ -307,11 +311,16 @@ class World:
 
     def ensure_region(self, pos: rl.Vector3):
         rpos = region_coord(pos)  # (rx, rz)
-
+        def _rand32():
+            return random.randint(0, 32)
         if rpos not in self.regions:
             # Create the new region at coordinate (rx, rz)
-            world_pos = rl.Vector3(rpos[0], 0, rpos[1])
+            #world_pos = rl.Vector3(rpos[0], 0, rpos[1])
             new_region = Region(pos)
+
+            # TODO: remove
+            util.animals.append(Smilodon(rl.Vector3(pos.x + _rand32(), 0, pos.z + _rand32()), 0))
+
             self.regions[rpos] = new_region
             print(f"I discovered {new_region}, new map is {self.regions}")
         return self.regions[rpos]
