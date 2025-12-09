@@ -5,7 +5,7 @@ from util import *
 import ultimateraylib as rl
 import pickle
 
-__version__ = "0.0.1dev"
+__version__ = "0.0.2dev"
 
 if os.path.exists("debug.log"):
     with open("debug.log", "w") as f:
@@ -191,7 +191,7 @@ while not rl.window_should_close():
     #rl.update_model_animation_bones(headless, anim, frame)
     camyaw = get_camera_yaw(cam)
     rl.begin_drawing()
-    rl.clear_background(rl.SKYBLUE)
+    rl.clear_background(rl.SKYBLUE if daynightf <= 18000 else rl.BLACK)
 
     rl.begin_mode_3d(cam)
     #rl.draw_grid(100, 1)
@@ -221,7 +221,7 @@ while not rl.window_should_close():
         rl.draw_billboard(cam, props.suntex, rl.Vector3(model_pos.x + 50, model_pos.y, model_pos.z), 5, rl.WHITE)
     
     elif daynightf >= 18000:
-        rl.draw_billboard(cam, props.suntex, rl.Vector3(model_pos.x - 50, model_pos.y, model_pos.z), 5, rl.WHITE)
+        rl.draw_billboard(cam, props.moontex, rl.Vector3(model_pos.x - 50, model_pos.y, model_pos.z), 5, rl.WHITE)
 
     rl.end_mode_3d()
     rl.draw_text(str(daynightf), 0, 0, 20, rl.BLACK)
