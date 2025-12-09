@@ -3,7 +3,7 @@ import ultimateraylib as rl
 import math,util
 
 def init():
-    global treemodel, floormodel, rockmodel, tree_bb, rock_bb, flintmodel, flint_bb,rocktex, itemtex, flinttex, craftsound, knifetex, buildingmodel, building_bb, buildingtex, smilodonmodel, smilodonanims, suntex
+    global treemodel, floormodel, rockmodel, tree_bb, rock_bb, flintmodel, flint_bb,rocktex, itemtex, flinttex, craftsound, knifetex, buildingmodel, building_bb, buildingtex, smilodonmodel, smilodonanims, suntex, moontex
     treemodel = asset.load_model("assets/tree.glb")
     floormodel = asset.load_model("assets/floor.glb")
     rockmodel = asset.load_model("assets/rock.glb")
@@ -29,6 +29,7 @@ def init():
     smilodonanims = asset.load_model_animations("assets/smilodon.glb")
 
     suntex = asset.load_texture("assets/sun.png")
+    moontex = asset.load_texture("assets/moon.png")
 
 class Animal:
     def __init__(self, health: int, model: rl.Model, modelanims: list[rl.ModelAnimation] | None, pos: rl.Vector3, roty: float) -> None:
