@@ -6,13 +6,11 @@ rl.set_exit_key(rl.KEY_NULL)
 rl.set_target_fps(60)
 import menu
 
-while not rl.window_should_close():
+while not menu.shouldquit:
     rl.begin_drawing()
     menu.draw()
-    if menu.shouldquit:
-        break
     rl.end_drawing()
 
 print("Meow")
-rl.close_window()
-rl.close_audio_device()
+#rl.close_window()
+#rl.close_audio_device()

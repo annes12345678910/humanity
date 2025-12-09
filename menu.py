@@ -36,9 +36,10 @@ def draw():
             print("Failed to connect. Starting singleplayer world")
             shouldquit = True
             import singleplayer
-            return
+            
         
         rl.stop_music_stream(music)
+        return
     if rl.gui_button(rl.Rectangle(int(winsize.x / 2) - 150, int(winsize.y / 2) + 200, 300, 100), "Quit"):
         shouldquit = True
     if rl.is_key_down(rl.KEY_LEFT_SUPER) and rl.is_key_down(rl.KEY_V):
