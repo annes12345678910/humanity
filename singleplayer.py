@@ -207,6 +207,8 @@ while not rl.window_should_close():
     bb.max = rl.Vector3(model_pos.x + 0.3, (model_pos.y + 1.6) if current == 0 else model_pos.y + 1, model_pos.z + 0.3)
     rl.draw_model_ex(headless, model_pos, rl.Vector3(0,1,0), camyaw + 180, rl.Vector3(1,1,1), rl.WHITE)
     oooop.draw()
+    
+    #draw fropped items
     for i in droppeditems:
         if isinstance(i, props._empty):
             i.draw()
@@ -214,10 +216,12 @@ while not rl.window_should_close():
             rl.draw_billboard(cam, i.texture, i.pos, 1, rl.WHITE)
             rl.draw_bounding_box(i.box, rl.RED)
     
+    # draw buildngs
     for i in buildings:
         if isinstance(i, props.Building):
             i.draw()
     
+    # draw animals
     for i in animals:
         if isinstance(i, props.Animal):
             i.draw(True)

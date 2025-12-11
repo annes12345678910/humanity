@@ -38,6 +38,7 @@ def boxtodict(box: rl.BoundingBox):
 def dumplog(string: str, sep:str = '\n'):
     with open("debug.log", "a") as f:
         f.write(string + sep)
+
 def dumpandprint(string: str, sep:str = '\n'):
     dumplog(string, sep)
     print(string, end=sep)
@@ -84,12 +85,15 @@ def bothslotsare(value):
         return True
     return False
 
-def handshave(value1, value2):
-    a = slots[config.dominanthand].__class__ == value1 or slots[config.dominanthand].__class__ == value2
-    b = slots[nondominanthand].__class__ == value1 or slots[nondominanthand].__class__ == value2
-    if slots[config.dominanthand].__class__ == slots[nondominanthand].__class__:
-        return False
-    return a == b
+def handshave(t1, t2):
+    h1 = slots[config.dominanthand].__class__
+    h2 = slots[nondominanthand].__class__
+
+    return (
+        (h1 is t1 and h2 is t2) or
+        (h1 is t2 and h2 is t1)
+    )
+
 
 def clearhands():
     slots[config.dominanthand] = None
@@ -120,18 +124,24 @@ def dicttoregion(dik: dict):
 def craft():
     crafted = None
     rl.play_sound(props.craftsound)
+
+    # Craft knife from rock + flint
     if handshave(props.RockItem, props.FlintItem):
         clearhands()
-        #slots[config.dominanthand] = props.Knife() # type: ignore
-        set67(props.Knife())
-        crafted = slots[config.dominanthand]
-    elif handshave(props.RockItem, props.Knife):
+        crafted = props.Knife()        # create the crafted item
+        set67(crafted)
+
+    # Craft building item from rock + knife
+    elif handshave(props.RockItem, props.Knife):  # use the *type*, not instance
         clearhands()
-        #slots[config.dominanthand] = props.Knife() # type: ignore
-        set67(props.BuildingItem())
-        crafted = slots[config.dominanthand]
+        crafted = props.BuildingItem()  # create the crafted item
+        set67(crafted)
     
+    else:
+        return
+
     dumpandprint(f"I crafted {crafted}")
+
 
 def drawcopyright(winh):
     rl.draw_text("© Annes Widow - 2025", 10, winh - 20, 10, rl.LIGHTGRAY)

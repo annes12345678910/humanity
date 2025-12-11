@@ -15,5 +15,5 @@ print("Meow")
 rl.close_window()
 rl.close_audio_device()
 
-if menu.single:
+if menu.single: # what a funny name
     import singleplayer
