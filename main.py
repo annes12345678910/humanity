@@ -12,5 +12,8 @@ while not menu.shouldquit:
     rl.end_drawing()
 
 print("Meow")
-#rl.close_window()
-#rl.close_audio_device()
+rl.close_window()
+rl.close_audio_device()
+
+if menu.single:
+    import singleplayer

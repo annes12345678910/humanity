@@ -1,3 +1,4 @@
+import math
 import ultimateraylib as rl
 import asset, connect
 cam = rl.make_camera(
@@ -16,8 +17,12 @@ winsize: rl.Vector2
 iptojoin = ""
 ismenu = True
 shouldquit = False
+single = False
+frame = 0
 def draw():
-    global cam, winsize, iptojoin, ismenu, shouldquit
+    global cam, winsize, iptojoin, ismenu, shouldquit, single, frame
+    frame += 1
+    shouldquit = rl.window_should_close()
     if not ismenu:
         return
     winsize = rl.Vector2(rl.get_screen_width(), rl.get_screen_height())
@@ -27,7 +32,7 @@ def draw():
     rl.begin_mode_3d(cam)
     rl.draw_model(bg, rl.Vector3(0,0,0), 1, rl.WHITE)
     rl.end_mode_3d()
-    rl.draw_texture(logo, int(winsize.x / 2) - 150, int(winsize.y / 2) - 300, rl.WHITE)
+    rl.draw_texture(logo, int(winsize.x / 2) - 150, int((int(winsize.y / 2) - 300) + math.sin(frame / 20) * 10), rl.WHITE)
     if rl.gui_button(rl.Rectangle(int(winsize.x / 2) - 150, int(winsize.y / 2) + 30, 300, 100), "Play"):
         print(f"Trying to connect to {iptojoin}")
         try:
@@ -35,7 +40,7 @@ def draw():
         except:
             print("Failed to connect. Starting singleplayer world")
             shouldquit = True
-            import singleplayer
+            single = True
             
         
         rl.stop_music_stream(music)
