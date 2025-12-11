@@ -90,7 +90,7 @@ dumpandprint("========================")
 
 oooop = props.World()
 drawemotes = False
-freemusic = asset.load_music("assets/free.mp3")
+freemusic = asset.load_music("assets/oisto.mp3")
 #oooop.add_region(props.Region(rl.Vector3(0,0,0)))
 #oooop.add_region(props.Region(rl.Vector3(32,0,0)))
 

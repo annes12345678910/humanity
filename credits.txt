@@ -3,3 +3,4 @@ Annes Widow - Developer
 
 === MUSIC ===
 Annes Widow - Primary Composer
+Suno AI - oisto.mp3, toso.mp3

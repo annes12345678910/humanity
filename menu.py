@@ -11,7 +11,7 @@ cam = rl.make_camera(
 
 bg = asset.load_model("assets/humanscene.glb")
 logo = asset.load_texture("assets/logo.png")
-music = asset.load_music("assets/howitsdone.mp3")
+music = asset.load_music("assets/aiso.mp3")
 rl.play_music_stream(music)
 winsize: rl.Vector2
 iptojoin = ""
