@@ -1,11 +1,11 @@
 import os
 import props
-import asset,math,config
+import asset,config
 from util import *
 import ultimateraylib as rl
 import pickle
 
-__version__ = "0.0.2dev"
+__version__ = "0.0.1dev2"
 
 if os.path.exists("debug.log"):
     with open("debug.log", "w") as f:
@@ -207,7 +207,7 @@ while not rl.window_should_close():
     bb.max = rl.Vector3(model_pos.x + 0.3, (model_pos.y + 1.6) if current == 0 else model_pos.y + 1, model_pos.z + 0.3)
     rl.draw_model_ex(headless, model_pos, rl.Vector3(0,1,0), camyaw + 180, rl.Vector3(1,1,1), rl.WHITE)
     oooop.draw()
-    
+
     #draw fropped items
     for i in droppeditems:
         if isinstance(i, props._empty):
