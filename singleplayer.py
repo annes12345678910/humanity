@@ -97,17 +97,22 @@ freemusic = asset.load_music("assets/oisto.mp3")
 currentframe = 0
 
 while not rl.window_should_close():
+
+    # window dimensions
     winw = rl.get_screen_width() if not rl.is_window_fullscreen() else rl.get_monitor_width(rl.get_current_monitor())
     winh = rl.get_screen_height() if not rl.is_window_fullscreen() else rl.get_monitor_height(rl.get_current_monitor())
+
     rl.update_camera(cam, rl.CAMERA_FIRST_PERSON)
     
+    # lock mouse
     if not rl.is_key_down(rl.KEY_M):
         rl.set_mouse_position(int(winw / 2), int(winh / 2))
     
-    #print(math.sin(currentframe))
+    # mouse ray
     mouseray = rl.get_screen_to_world_ray(rl.get_mouse_position(), cam)
-    cols = oooop.get_collision(mouseray)
 
+    # pick up items
+    cols = oooop.get_collision(mouseray)
     if rl.is_mouse_button_pressed(rl.MOUSE_BUTTON_LEFT):
         if cols and cols.pickable:
             if set67(cols.clas()):
@@ -126,9 +131,11 @@ while not rl.window_should_close():
         for i in picked:
             droppeditems.remove(i)
 
+    # craft
     if rl.is_key_pressed(rl.KEY_C):
         craft()
     
+    # drop items
     if rl.is_key_pressed(rl.KEY_Q):
         if isinstance(slots[config.dominanthand], props.Item) and not isinstance(slots[config.dominanthand], props.BuildingItem):
             erm: props.Item = slots[config.dominanthand] # type: ignore
@@ -142,17 +149,21 @@ while not rl.window_should_close():
                 droppeditems.append(erm)
             slots[nondominanthand] = None
     
+    # DO NOT PRESS F
     if rl.is_key_pressed(rl.KEY_F):
         rl.toggle_fullscreen()
 
-
-
+    # progress animation frame
     anim = headlessanim[current]
     frame = (frame + 1) % anim.frameCount
+
+    # progess day
     daynightf = (daynightf + 1) % 36000
 
+    # music
     rl.update_music_stream(freemusic)
-        
+    
+    # can i play music?
     if daynightf < 18000:
         if rl.is_music_stream_playing(freemusic):
             rl.stop_music_stream(freemusic)
@@ -166,12 +177,15 @@ while not rl.window_should_close():
                     rl.stop_music_stream(freemusic)
         isnight = True
     
+    # what animation
     if wasd() and not rl.is_key_down(rl.KEY_LEFT_SHIFT):
         current = 1
     elif rl.is_key_down(rl.KEY_LEFT_SHIFT) and wasd():
         current = 2
     elif current < 3:
         current = 0
+    
+    # toggle emote menu
     if rl.is_key_pressed(rl.KEY_PERIOD):
         drawemotes = not drawemotes
     
@@ -182,6 +196,7 @@ while not rl.window_should_close():
             buildings.append(dada.blockform(model_pos))
             slots[config.dominanthand] = None
     
+    # draw emote menu
     if drawemotes:
         if rl.is_key_pressed(rl.KEY_ONE):
             current = 3
@@ -189,23 +204,37 @@ while not rl.window_should_close():
             current = 4
         elif rl.is_key_pressed(rl.KEY_THREE):
             current = 5
+    
+    # update anim
     rl.update_model_animation(headless, anim, frame)
-    #rl.update_model_animation_bones(headless, anim, frame)
+    
+    # get the camera y rotation (yaw)
     camyaw = get_camera_yaw(cam)
+
     rl.begin_drawing()
+
+    # blue for day and black for night
     rl.clear_background(rl.SKYBLUE if daynightf <= 18000 else rl.BLACK)
 
     rl.begin_mode_3d(cam)
-    #rl.draw_grid(100, 1)
+
+    # player bounding box
     bb = rl.BoundingBox()
-    #rl.Vector3(0,0,0)
+
+    # player model pos
     model_pos = rl.Vector3(cam.position.x + (0.1 if camyaw < -90 and camyaw > -180 else -0.1), (bb.min.y) if current == 0 else bb.min.y + 0.6, cam.position.z + (0.1 if camyaw < -90 and camyaw > -180 else -0.1))  # push mesh up by bottom Y
 
+    # i can discover reigons
     oooop.ensure_region(snap_floor(model_pos))
     
+    # update box
     bb.min = rl.Vector3(model_pos.x - 0.3, model_pos.y if current == 0 else model_pos.y - 0.6, model_pos.z - 0.3)
     bb.max = rl.Vector3(model_pos.x + 0.3, (model_pos.y + 1.6) if current == 0 else model_pos.y + 1, model_pos.z + 0.3)
+
+    # draw player
     rl.draw_model_ex(headless, model_pos, rl.Vector3(0,1,0), camyaw + 180, rl.Vector3(1,1,1), rl.WHITE)
+
+    # draw world
     oooop.draw()
 
     #draw fropped items
@@ -226,7 +255,7 @@ while not rl.window_should_close():
         if isinstance(i, props.Animal):
             i.draw(True)
     
-    #rl.draw_ray(mouseray, rl.RED)
+    #draw sun or moon
     if daynightf <= 18000:
         rl.draw_billboard(cam, props.suntex, rl.Vector3(model_pos.x + 50, model_pos.y, model_pos.z), 5, rl.WHITE)
     
@@ -234,11 +263,14 @@ while not rl.window_should_close():
         rl.draw_billboard(cam, props.moontex, rl.Vector3(model_pos.x - 50, model_pos.y, model_pos.z), 5, rl.WHITE)
 
     rl.end_mode_3d()
-    rl.draw_text(str(daynightf), 0, 0, 20, rl.BLACK)
+    #rl.draw_text(str(daynightf), 0, 0, 20, rl.BLACK)
+
+    # draw emote menu
     if drawemotes:
         rl.draw_rectangle(int(winw / 2) - 200, int(winh / 2) - 200, 400, 400, rl.LIGHTGRAY)
         rl.draw_text("\nPress 2 for dance1\nPress 3 for flex", int(winw / 2) - 190, int(winh / 2) - 190, 20, rl.BLACK)
     
+    # pick up stuff
     if isinstance(cols, props._empty):
         if cols.pickable and handsfree():
             rl.draw_text(f"Click To Pickup {cols.__class__.__name__.capitalize()}", int(winw / 2) - 50, int(winh / 2) - 30, 20, rl.BLACK)
@@ -253,7 +285,8 @@ while not rl.window_should_close():
                 rl.draw_text(f"Click To Pickup {i.__class__.__name__.capitalize()}", int(winw / 2) - 50, int(winh / 2) - 30, 20, rl.BLACK)
             else:
                 rl.draw_text("Your hands are full", int(winw / 2) - 50, int(winh / 2) - 30, 20, rl.BLACK)
-        
+    
+    # draw item slots
     if isinstance(slots["left"], props.Item):
         slots["left"].draw(rl.Vector2(10, winh - 74)) # type: ignore
         rl.draw_text("Left Hand", 10, winh - 94, 20, rl.BLACK)
@@ -261,9 +294,12 @@ while not rl.window_should_close():
     if isinstance(slots["right"], props.Item):
         slots["right"].draw(rl.Vector2(winw - 74, winh - 74)) # type: ignore
         rl.draw_text("Right Hand", winw - 124, winh - 94, 20, rl.BLACK)
+    
     drawcopyright(winh)
+
     rl.end_drawing()
 
+    # what to save
     tosave = {
         "daynightf": daynightf,
         "droppeditems": [],
@@ -277,6 +313,7 @@ while not rl.window_should_close():
     for i in droppeditems:
         tosave["droppeditems"].append(i.todict())
 
+# save progress
 dumplog(f'Saved Progress to "{config.saveto}" it is {tosave}')
 with open(config.saveto, "wb") as f:
     pickle.dump(tosave, f)
