@@ -222,7 +222,7 @@ while not rl.window_should_close():
     bb = rl.BoundingBox()
 
     # player model pos
-    model_pos = rl.Vector3(cam.position.x + (0.1 if camyaw < -90 and camyaw > -180 else -0.1), (bb.min.y) if current == 0 else bb.min.y + 0.6, cam.position.z + (0.1 if camyaw < -90 and camyaw > -180 else -0.1))  # push mesh up by bottom Y
+    model_pos = rl.Vector3(cam.position.x + (0.1 if camyaw < -90 and camyaw > -180 else -0.1), (bb.min.y), cam.position.z + (0.1 if camyaw < -90 and camyaw > -180 else -0.1))  # push mesh up by bottom Y
 
     # i can discover reigons
     oooop.ensure_region(snap_floor(model_pos))
