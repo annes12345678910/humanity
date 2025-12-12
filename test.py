@@ -12,8 +12,9 @@ cam = rl.make_camera(
     60,
     rl.CAMERA_PERSPECTIVE
 )
+
 props.init()
-smilodon = props.Animal(100, props.smilodonmodel, props.smilodonanims, rl.Vector3(0,0,0), 0)
+smilodon = props.Smilodon(rl.Vector3(0,0,0), 0)
 smilodon.index = 2
 rl.set_target_fps(60)
 
