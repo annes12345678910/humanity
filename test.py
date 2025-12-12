@@ -2,6 +2,7 @@ import math
 import random
 import props
 import ultimateraylib as rl
+import ultimateraylib.rlgl as rlgl
 
 rl.init_window()
 
@@ -49,6 +50,16 @@ while not rl.window_should_close():
     smilodon.followmovesheet(sheet, loop=True, speed=0.3)
     rl.draw_model(eggy, rl.vector3_zero, 1, rl.WHITE)
     rl.draw_model_wires(eggy, rl.vector3_zero, 1, rl.BLACK)
+
+    rlgl.rl_begin(rlgl.RL_TRIANGLES)
+    rlgl.rl_color_4f(1, 0, 0, 1)
+
+    rlgl.rl_vertex_3f(3.5, 1, 0)
+    rlgl.rl_vertex_3f(3, 0, 0)
+    rlgl.rl_vertex_3f(3, 0, 1)
+
+    rlgl.rl_end()
+
     rl.draw_grid(100, 1)
     rl.end_mode_3d()
 
