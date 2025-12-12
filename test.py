@@ -54,9 +54,9 @@ while not rl.window_should_close():
     rlgl.rl_begin(rlgl.RL_TRIANGLES)
     rlgl.rl_color_4f(1, 0, 0, 1)
 
-    rlgl.rl_vertex_3f(3.5, 1, 0)
-    rlgl.rl_vertex_3f(3, 0, 0)
-    rlgl.rl_vertex_3f(3, 0, 1)
+    rlgl.rl_vertex_3f(3.5, 1, 0) #top
+    rlgl.rl_vertex_3f(3, 0, 0) #bl
+    rlgl.rl_vertex_3f(3, 0, 1) #br
 
     rlgl.rl_end()
 
