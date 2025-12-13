@@ -1,6 +1,7 @@
 import math
 import ultimateraylib as rl
-import asset, connect, config
+import asset, config
+import connect
 cam = rl.make_camera(
     rl.Vector3(10, 2, 10),
     rl.Vector3(0,0,0),
