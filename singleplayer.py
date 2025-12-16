@@ -263,7 +263,7 @@ while not rl.window_should_close():
         rl.draw_billboard(cam, props.moontex, rl.Vector3(model_pos.x - 50, model_pos.y, model_pos.z), 5, rl.WHITE)
 
     rl.end_mode_3d()
-    #rl.draw_text(str(daynightf), 0, 0, 20, rl.BLACK)
+    rl.draw_text(str(daynightf), 0, 0, 20, rl.BLACK)
 
     # draw emote menu
     if drawemotes:

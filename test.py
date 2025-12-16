@@ -28,43 +28,67 @@ sheet = [
 ]
 
 currentframe = 0
-while not rl.window_should_close():
-    currentframe += 1
+def animaltest():
+    global currentframe
+    while not rl.window_should_close():
+        currentframe += 1
 
-    if (currentframe % 240) == 0:
-        sheet.clear()
-        smilodon.sheetindex = 0
-        for i in range(random.randint(3,4)):
-            sheet.append(rl.Vector3(random.randint(-10,10), 0, random.randint(-10,10)))
+        if (currentframe % 240) == 0:
+            sheet.clear()
+            smilodon.sheetindex = 0
+            for i in range(random.randint(3,4)):
+                sheet.append(rl.Vector3(random.randint(-10,10), 0, random.randint(-10,10)))
 
-    rl.update_camera(cam, rl.CAMERA_THIRD_PERSON)
+        rl.update_camera(cam, rl.CAMERA_THIRD_PERSON)
 
-    rl.set_mouse_position(400, 300)
+        rl.set_mouse_position(400, 300)
 
-    rl.begin_drawing()
-    rl.clear_background(rl.RAYWHITE)
+        rl.begin_drawing()
+        rl.clear_background(rl.RAYWHITE)
 
-    rl.begin_mode_3d(cam)
-    #smilodon.pos.y = math.sin(currentframe / 10)
-    smilodon.draw(debug=True)
-    smilodon.followmovesheet(sheet, loop=True, speed=0.3)
-    rl.draw_model(eggy, rl.vector3_zero, 1, rl.WHITE)
-    rl.draw_model_wires(eggy, rl.vector3_zero, 1, rl.BLACK)
+        rl.begin_mode_3d(cam)
+        #smilodon.pos.y = math.sin(currentframe / 10)
+        smilodon.draw(debug=True)
+        smilodon.followmovesheet(sheet, loop=True, speed=0.3)
+        rl.draw_model(eggy, rl.vector3_zero, 1, rl.WHITE)
+        rl.draw_model_wires(eggy, rl.vector3_zero, 1, rl.BLACK)
 
-    rlgl.rl_begin(rlgl.RL_TRIANGLES)
-    rlgl.rl_color_4f(1, 0, 0, 1)
+        rlgl.rl_begin(rlgl.RL_TRIANGLES)
+        rlgl.rl_color_4f(1, 0, 0, 1)
 
-    rlgl.rl_vertex_3f(3.5, 1, 0) #top
-    rlgl.rl_vertex_3f(3, 0, 0) #bl
-    rlgl.rl_vertex_3f(3, 0, 1) #br
+        rlgl.rl_vertex_3f(3.5, 1, 0) #top
+        rlgl.rl_vertex_3f(3, 0, 0) #bl
+        rlgl.rl_vertex_3f(3, 0, 1) #br
 
-    rlgl.rl_end()
+        rlgl.rl_end()
 
-    rl.draw_grid(100, 1)
-    rl.end_mode_3d()
+        rl.draw_grid(100, 1)
+        rl.end_mode_3d()
 
-    rl.draw_text(str((currentframe % 8) == 0), 0,0, 20, rl.BLACK)
+        rl.draw_text(str((currentframe % 8) == 0), 0,0, 20, rl.BLACK)
 
-    rl.end_drawing()
+        rl.end_drawing()
 
-rl.close_window()
+    rl.close_window()
+
+def rottest():
+    opo = rl.Vector3(10,0,0)
+    while not rl.window_should_close():
+        rl.update_camera(cam, rl.CAMERA_THIRD_PERSON)
+
+        rl.set_mouse_position(400, 300)
+
+        rl.begin_drawing()
+        rl.clear_background(rl.RAYWHITE)
+
+        rl.begin_mode_3d(cam)
+        opo = rl.vector3_rotate_by_axis_angle(opo, rl.Vector3(1, 1, 0), 0.1)
+        rl.draw_cube_v(opo, rl.vector3_one, rl.RED)
+        rl.draw_grid(100, 1)
+        rl.end_mode_3d()
+
+        rl.end_drawing()
+
+    rl.close_window()
+
+rottest()
