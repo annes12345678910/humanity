@@ -1,4 +1,4 @@
-import math,config,sys,props
+import math,config,props
 import ultimateraylib as rl
 wasdspeed = rl.Vector2(0,0)
 
@@ -17,6 +17,12 @@ slots = {
 buildings = []
 
 animals = []
+
+def shademodel(model: rl.Model, shader: rl.Shader) -> rl.Model:
+    for i in range(model.materialCount):
+        model.materials[i].shader = shader
+    
+    return model
 
 def handsfree():
     if not slots["left"] or not slots["right"]:
