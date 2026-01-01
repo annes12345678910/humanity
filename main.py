@@ -1,3 +1,10 @@
+#
+# main.py - Humanity. This is the menu stuff
+#
+# Copyright © Annes Widow - 2025-2026
+#
+# skibidi
+
 import ultimateraylib as rl
 rl.set_config_flags(rl.FLAG_WINDOW_RESIZABLE)
 rl.init_window(800, 900, "Humanity")

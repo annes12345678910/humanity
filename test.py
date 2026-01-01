@@ -1,3 +1,10 @@
+#
+# test.py - Humanity. Devious experiments happen here
+#
+# Copyright © Annes Widow - 2025-2026
+#
+# skibidi
+
 import math
 import random
 import props, util
@@ -74,7 +81,7 @@ def animaltest():
         smilodon.draw(debug=True)
         smilodon.followmovesheet(sheet, loop=True, speed=0.3)
         rl.draw_model(eggy, rl.vector3_zero, 1, rl.WHITE)
-        rl.draw_model_wires(eggy, rl.vector3_zero, 1, rl.BLACK)
+        #rl.draw_model_wires(eggy, rl.vector3_zero, 1, rl.BLACK)
 
         rlgl.rl_begin(rlgl.RL_TRIANGLES)
         rlgl.rl_color_4f(1, 0, 0, 1)
